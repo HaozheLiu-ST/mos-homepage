@@ -1,0 +1,506 @@
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mixture of States: Routing Token-Level Dynamics for Multimodal Generation</title>
+    <meta name="description" content="Project page for Mixture of States (MoS), a routing framework that mixes bi-directional and causal attention states for multimodal generation.">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <meta name="robots" content="all">
+    <meta content="en_EN" property="og:locale">
+    <meta content="website" property="og:type">
+    <meta content="./index.html" property="og:url">
+    <meta content="Mixture of States" property="og:title">
+    <meta content="Routing token-level dynamics for multimodal generation." property="og:description">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="Mixture of States: Routing Token-Level Dynamics for Multimodal Generation">
+
+    <link rel="stylesheet" type="text/css" media="all" href="assets/stylesheets/main_free.css" />
+    <link rel="stylesheet" type="text/css" media="all" href="clarity/clarity.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/foundation.min.css">
+    <link href="assets/fontawesome-free-6.6.0-web/css/all.min.css" rel="stylesheet">
+    <script src="assets/scripts/navbar.js"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            "HTML-CSS": {
+              scale: 95,
+              fonts: ["Gyre-Pagella"],
+              imageFont: null,
+              undefinedFamily: "'Arial Unicode MS', cmbright"
+            },
+            tex2jax: {
+                inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                processEscapes: true
+              }
+          });
+    </script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <div class="container blog" id="first-content" style="background: linear-gradient(90deg, #dbe8f5 0%, #f5efe1 100%);">
+        <div class="blog-title no-cover">
+            <div class="blog-intro">
+                <div>
+                    <h1 class="title">Mixture of States: Routing Token-Level Dynamics for Multimodal Generation</h1>
+                    <p class="author">
+                        <a href="https://haozheliu-st.github.io/">Haozhe Liu</a><sup>1,2,*</sup>, <a href="https://scholar.google.com/citations?user=PGtHUI0AAAAJ&amp;hl=en">Ding Liu</a><sup>2,*</sup>, <a href="https://metauto.ai/">Mingchen Zhuge</a><sup>1,2,&dagger;</sup>, <a href="https://www.franciszzj.com/">Zijian Zhou</a><sup>2,&dagger;</sup>, <a href="https://tianxieusc.github.io/">Tian Xie</a><sup>2,&dagger;</sup>, Sen He<sup>2</sup>, Yukang Yang<sup>2</sup>, Shuming Liu<sup>1,2</sup>, Yuren Cong<sup>2</sup>, Jiadong Guo<sup>2</sup>, Hongyu Xu<sup>2</sup>, Ke Xu<sup>2</sup>, Kam-Woh Ng<sup>2</sup>, Juan C. P&eacute;rez<sup>2</sup>, Juan-Manuel P&eacute;rez-R&uacute;a<sup>2</sup>, <a href="https://scholar.google.com/citations?user=MeS5d4gAAAAJ&amp;hl=en">Tao Xiang</a><sup>2</sup>, <a href="https://scholar.google.com/citations?user=yFMX138AAAAJ&amp;hl=en">Wei Liu</a><sup>2</sup>, <a href="https://shikun.io/">Shikun Liu</a><sup>2,&dagger;</sup>, and <a href="https://scholar.google.com/citations?user=gLnCTgIAAAAJ&amp;hl=en">J&uuml;rgen Schmidhuber</a><sup>1,&dagger;</sup>
+                    </p>
+                    <p class="author" style="padding-top: 0px;">
+                        <sup>1</sup> KAUST &nbsp;&nbsp; <sup>2</sup> Meta AI<br>
+                        <sup>*</sup> Equal contribution (Joint First Authors) &nbsp;&nbsp; <sup>&dagger;</sup> Core Contributors
+                    </p>
+                    <p class="abstract">
+                        We introduce MoS (Mixture of States), a novel fusion paradigm for multimodal diffusion models that merges modalities using flexible, state-based interactions. The core of MoS is a learnable, token-wise router that creates denoising timestep- and input-dependent interactions between modalities' hidden states, precisely aligning token-level features with the diffusion trajectory. This router sparsely selects the top-k hidden states and is trained with an epsilon-greedy strategy, efficiently selecting contextual features with minimal learnable parameters and negligible computational overhead. We validate our design with text-to-image generation (MoS-Image) and editing (MoS-Editing), which achieve state-of-the-art results. With only 3B to 5B parameters, our models match or surpass counterparts up to 4x larger. These findings establish MoS as a flexible and compute-efficient paradigm for scaling multimodal diffusion models.
+                    </p>
+
+                    <div class="info">
+                        <div>
+                            <a href="./2511.12207v1.pdf" class="button icon" style="background-color: rgba(255, 255, 255, 0.2)">Paper PDF <i class="fa-solid fa-file-pdf"></i></a> &nbsp;&nbsp;
+                            <a href="https://arxiv.org/abs/2511.12207" class="button icon" style="background-color: rgba(255, 255, 255, 0.2)">arXiv <i class="fa-solid fa-book-open"></i></a> &nbsp;&nbsp;
+                            <a href="https://doi.org/10.48550/arXiv.2511.12207" class="button icon" style="background-color: rgba(255, 255, 255, 0.2)">DOI <i class="fa-solid fa-link"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info">
+                    <p>Accepted by CVPR 2026 | arXiv:2511.12207v1</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container blog main first" id="blog-main">
+        <h1>Introduction</h1>
+        <p class='text'>
+            Multimodal generation is typically built on a fixed attention regime: either causal decoding or fully bi-directional interaction. However, real multimodal reasoning is asymmetric and context-dependent. Different tokens may require different visibility patterns at different layers, especially when text instructions, visual context, and generation targets interact over a long denoising trajectory.
+        </p>
+        <p class="text">
+            We introduce <b>Mixture of States (MoS)</b>, a token-level routing framework that allows each token to dynamically switch between causal and bi-directional states. Instead of hand-crafted fusion rules, MoS learns these routing decisions end-to-end with a lightweight router, enabling the model to adapt token interactions to input content and generation stage.
+        </p>
+        <p class="text">
+            Following this principle, the key characteristics of MoS can be summarized as:
+        </p>
+        <ul>
+            <li>
+                <p class="text"><b>Adaptive layer selection, enabled by token-wise routing.</b> Rather than always consuming one fixed text layer (or enforcing rigid one-to-one layer matching), MoS lets each token query a pool of cross-modal hidden states and select useful ones through a learnable router. In practice, the router performs sparse top-k state selection, so layer usage is decided by content and context, not by a hard-coded layer index.</p>
+            </li>
+            <li>
+                <p class="text"><b>Dynamic, timestep-dependent conditioning through state routing.</b> Diffusion denoising is non-stationary, but static one-shot text conditioning cannot reflect this evolution. MoS addresses this by making routing decisions conditioned on the current denoising state, so the selected conditional features vary across timesteps and noise levels. This keeps guidance aligned with what the model needs at each stage of generation.</p>
+            </li>
+            <li>
+                <p class="text"><b>Token-specific conditional signals at fine granularity.</b> Different tokens require different evidence (semantic, structural, or style cues), so sharing one uniform layer embedding across all tokens is restrictive. MoS routes at token level: each token can draw from different states and layers, producing a more precise conditional interface between modalities and improving alignment in both generation and editing.</p>
+            </li>
+        </ul>
+    </div>
+
+    <div class="container blog main gray">
+        <!-- Place your Figure 1 image below, e.g.: -->
+        <img src="assets/figures/figure3.png" alt="MoS Design Details">
+        <p class="caption inline"><b>Figure 1. MoS Design Details</b></p>
+       
+    </div>
+
+    <div class="container blog main">
+        <h1>MoS In Action</h1>
+
+        <h2>1. Image Generation</h2>
+    </div>
+
+    <div class="container blog extra-large gray-linear">
+        <p class="caption inline center"><b>Figure 2. Image Generation: Teaser and Prompt-conditioned Comparison.</b></p>
+        <img src="assets/figures/mos_teaser1.svg" alt="Teaser 1 for image generation." style="background: #fff; width: 94%;">
+        <div class="vis-compare-showcase">
+            <div class="vis-compare-overview">
+                <div class="vis-compare-overview-copy">
+                    <p class="vis-compare-kicker">Prompt-conditioned comparisons</p>
+                    <p class="vis-compare-lede">Use the buttons to switch between prompts. MoS-Image is highlighted on the right.</p>
+                </div>
+                <div class="vis-compare-methods">
+                    <span class="vis-compare-chip">Qwen-Image</span>
+                    <span class="vis-compare-chip">Flux</span>
+                    <span class="vis-compare-chip">Bagel</span>
+                    <span class="vis-compare-chip">SANA</span>
+                    <span class="vis-compare-chip mos">MoS-Image</span>
+                </div>
+            </div>
+
+            <div class="vis-compare-tabbar" role="tablist" aria-label="Prompt selection">
+                <button class="vis-compare-tab active" type="button" data-target="vis-compare-panel-1">01 Poster</button>
+                <button class="vis-compare-tab" type="button" data-target="vis-compare-panel-2">02 Food</button>
+                <button class="vis-compare-tab" type="button" data-target="vis-compare-panel-3">03 Menu</button>
+                <button class="vis-compare-tab" type="button" data-target="vis-compare-panel-4">04 GPS Ad</button>
+                <button class="vis-compare-tab" type="button" data-target="vis-compare-panel-5">05 Real Estate</button>
+            </div>
+
+            <section class="vis-compare-panel active" id="vis-compare-panel-1">
+                <div class="vis-compare-prompt-card">
+                    <span class="vis-compare-index">Prompt 1</span>
+                    <p>A colorful poster with the title at the top in large letters: “Author Meet and Greet on Saturday.” Below the title is a portrait of the author in the center. At the bottom, smaller text reads “Book Signing and Q&amp;A.”</p>
+                </div>
+                <div class="vis-compare-grid">
+                    <figure class="vis-compare-card">
+                        <figcaption>Qwen-Image</figcaption>
+                        <div class="vis-compare-media"><img src="assets/figures/vis_compared_svg/Qwen-1.svg" alt="Qwen-Image result for prompt 1." loading="lazy"></div>
+                    </figure>
+                    <figure class="vis-compare-card">
+                        <figcaption>Flux</figcaption>
+                        <div class="vis-compare-media"><img src="assets/figures/vis_compared_svg/Flux-1.svg" alt="Flux result for prompt 1." loading="lazy"></div>
+                    </figure>
+                    <figure class="vis-compare-card">
+                        <figcaption>Bagel</figcaption>
+                        <div class="vis-compare-media"><img src="assets/figures/vis_compared_svg/Bagel-1.svg" alt="Bagel result for prompt 1." loading="lazy"></div>
+                    </figure>
+                    <figure class="vis-compare-card">
+                        <figcaption>SANA</figcaption>
+                        <div class="vis-compare-media"><img src="assets/figures/vis_compared_svg/SANA-1.svg" alt="SANA result for prompt 1." loading="lazy"></div>
+                    </figure>
+                    <figure class="vis-compare-card mos">
+                        <figcaption>MoS-Image</figcaption>
+                        <div class="vis-compare-media"><img src="assets/figures/vis_compared_svg/MoS-Image-L-1.svg" alt="MoS-Image result for prompt 1." loading="lazy"></div>
+                    </figure>
+                </div>
+            </section>
+
+            <section class="vis-compare-panel" id="vis-compare-panel-2">
+                <div class="vis-compare-prompt-card">
+                    <span class="vis-compare-index">Prompt 2</span>
+                    <p>On a large wooden table, a variety of foods are arranged in a vibrant display. In the center sits a pepperoni pizza, cut into eight slices, the golden crust slightly charred at the edges, melted cheese stretching between slices, and glossy red pepperoni discs glistening with oil. To the right, a hamburger is stacked high on a white plate: a sesame seed bun with a juicy beef patty, melted cheddar cheese dripping down the sides, layers of green lettuce, red tomato slices, and pickles visible in between, with golden French fries scattered beside it. On the left, a grilled fish is presented on a rectangular platter, its skin crispy and golden-brown with hints of char, garnished with lemon slices placed along its body and fresh parsley sprinkled across. Near the top of the table, a bowl of fruit overflows with color: shiny red apples, bright yellow bananas curving upward, deep purple grapes spilling over the edge, and a cut-open orange revealing its juicy segments. At the front of the scene, a small dessert plate holds a slice of chocolate cake, dark and rich with glossy frosting, topped with a bright red strawberry. The entire table is lit with soft natural light, creating highlights on the glossy fruit skins, reflections on the melted cheese, and warm shadows under the plates, giving the display a fresh and appetizing look.</p>
+                </div>
+                <div class="vis-compare-grid">
+                    <figure class="vis-compare-card">
+                        <figcaption>Qwen-Image</figcaption>
+                        <div class="vis-compare-media"><img src="assets/figures/vis_compared_svg/Qwen-2.svg" alt="Qwen-Image result for prompt 2." loading="lazy"></div>
+                    </figure>
+                    <figure class="vis-compare-card">
+                        <figcaption>Flux</figcaption>
+                        <div class="vis-compare-media"><img src="assets/figures/vis_compared_svg/Flux-2.svg" alt="Flux result for prompt 2." loading="lazy"></div>
+                    </figure>
+                    <figure class="vis-compare-card">
+                        <figcaption>Bagel</figcaption>
+                        <div class="vis-compare-media"><img src="assets/figures/vis_compared_svg/Bagel-2.svg" alt="Bagel result for prompt 2." loading="lazy"></div>
+                    </figure>
+                    <figure class="vis-compare-card">
+                        <figcaption>SANA</figcaption>
+                        <div class="vis-compare-media"><img src="assets/figures/vis_compared_svg/SANA-2.svg" alt="SANA result for prompt 2." loading="lazy"></div>
+                    </figure>
+                    <figure class="vis-compare-card mos">
+                        <figcaption>MoS-Image</figcaption>
+                        <div class="vis-compare-media"><img src="assets/figures/vis_compared_svg/MoS-Image-L-2.svg" alt="MoS-Image result for prompt 2." loading="lazy"></div>
+                    </figure>
+                </div>
+            </section>
+
+            <section class="vis-compare-panel" id="vis-compare-panel-3">
+                <div class="vis-compare-prompt-card">
+                    <span class="vis-compare-index">Prompt 3</span>
+                    <p>A Chinese restaurant menu poster with a solid black background and golden decorative borders. At the top, in large bold letters, the heading says “Today’s Specials.” The appetizers section lists: “Spring Rolls - ¥18,” “Dumplings - ¥22,” “Hot and Sour Soup - ¥20.” The main dishes section displays in larger text: “Kung Pao Chicken - ¥45,” “Braised Beef - ¥55,” “Eggplant in Garlic Sauce - ¥38.” At the bottom, the desserts section reads: “Sesame Balls - ¥25,” “Mango Pudding - ¥28.” All menu items are written in clear white letters against the black background, with the prices shown directly beside each dish.</p>
+                </div>
+                <div class="vis-compare-grid">
+                    <figure class="vis-compare-card">
+                        <figcaption>Qwen-Image</figcaption>
+                        <div class="vis-compare-media"><img src="assets/figures/vis_compared_svg/Qwen-3.svg" alt="Qwen-Image result for prompt 3." loading="lazy"></div>
+                    </figure>
+                    <figure class="vis-compare-card">
+                        <figcaption>Flux</figcaption>
+                        <div class="vis-compare-media"><img src="assets/figures/vis_compared_svg/Flux-3.svg" alt="Flux result for prompt 3." loading="lazy"></div>
+                    </figure>
+                    <figure class="vis-compare-card">
+                        <figcaption>Bagel</figcaption>
+                        <div class="vis-compare-media"><img src="assets/figures/vis_compared_svg/Bagel-3.svg" alt="Bagel result for prompt 3." loading="lazy"></div>
+                    </figure>
+                    <figure class="vis-compare-card">
+                        <figcaption>SANA</figcaption>
+                        <div class="vis-compare-media"><img src="assets/figures/vis_compared_svg/SANA-3.svg" alt="SANA result for prompt 3." loading="lazy"></div>
+                    </figure>
+                    <figure class="vis-compare-card mos">
+                        <figcaption>MoS-Image</figcaption>
+                        <div class="vis-compare-media"><img src="assets/figures/vis_compared_svg/MoS-Image-L-3.svg" alt="MoS-Image result for prompt 3." loading="lazy"></div>
+                    </figure>
+                </div>
+            </section>
+
+            <section class="vis-compare-panel" id="vis-compare-panel-4">
+                <div class="vis-compare-prompt-card">
+                    <span class="vis-compare-index">Prompt 4</span>
+                    <p>The image is an advertisement for a GPS tracking device designed for dogs, featuring a brown dog running in the woods and a close-up of the device. In the foreground, a brown dog and a yellow collar is prominently displayed, running on a dirt path surrounded by trees. To the right of the dog, a text overlay reads "LIVE GPS TRACKING" in black font within a yellow rectangle, followed by "NEVER HAVING TO HOPE SOMEONE SCANS THEIR MICROCHIP" in white font. This text highlights the key benefit of the product. In the bottom center of the image, a close-up view of the GPS tracking device is shown. The device is black with a yellow strap and features the letters "MoS" in white on its front. The strap is made of a textured material and has a black plastic buckle. The overall design of the device appears sleek and modern. The background of the image is a blurred forest scene, with trees and foliage visible behind the dog. The atmosphere is one of freedom and adventure, as the dog runs through the woods with ease.</p>
+                </div>
+                <div class="vis-compare-grid">
+                    <figure class="vis-compare-card">
+                        <figcaption>Qwen-Image</figcaption>
+                        <div class="vis-compare-media"><img src="assets/figures/vis_compared_svg/Qwen-4.svg" alt="Qwen-Image result for prompt 4." loading="lazy"></div>
+                    </figure>
+                    <figure class="vis-compare-card">
+                        <figcaption>Flux</figcaption>
+                        <div class="vis-compare-media"><img src="assets/figures/vis_compared_svg/Flux-4.svg" alt="Flux result for prompt 4." loading="lazy"></div>
+                    </figure>
+                    <figure class="vis-compare-card">
+                        <figcaption>Bagel</figcaption>
+                        <div class="vis-compare-media"><img src="assets/figures/vis_compared_svg/Bagel-4.svg" alt="Bagel result for prompt 4." loading="lazy"></div>
+                    </figure>
+                    <figure class="vis-compare-card">
+                        <figcaption>SANA</figcaption>
+                        <div class="vis-compare-media"><img src="assets/figures/vis_compared_svg/SANA-4.svg" alt="SANA result for prompt 4." loading="lazy"></div>
+                    </figure>
+                    <figure class="vis-compare-card mos">
+                        <figcaption>MoS-Image</figcaption>
+                        <div class="vis-compare-media"><img src="assets/figures/vis_compared_svg/MoS-Image-L-4.svg" alt="MoS-Image result for prompt 4." loading="lazy"></div>
+                    </figure>
+                </div>
+            </section>
+
+            <section class="vis-compare-panel" id="vis-compare-panel-5">
+                <div class="vis-compare-prompt-card">
+                    <span class="vis-compare-index">Prompt 5</span>
+                    <p>The image is divided into two sections. The left side features a dark teal background with a grid pattern, accompanied by large white text that reads "Owner makes $131,150 IN 10 MONTHS WHEN PARTNERING WITH MoS." The word "MoS" is displayed in teal and yellow font below the main text. On the right side of the image, there is a photograph of a house situated in a wooded area. The house has a dark green exterior with white trim around the windows and doors. A small porch is visible at the front entrance, which is flanked by two lanterns on either side. The roof appears to be made of metal, and the surrounding landscape includes trees and bushes. A wooden walkway leads up to the front door, adding to the overall aesthetic appeal of the property.</p>
+                </div>
+                <div class="vis-compare-grid">
+                    <figure class="vis-compare-card">
+                        <figcaption>Qwen-Image</figcaption>
+                        <div class="vis-compare-media"><img src="assets/figures/vis_compared_svg/Qwen-5.svg" alt="Qwen-Image result for prompt 5." loading="lazy"></div>
+                    </figure>
+                    <figure class="vis-compare-card">
+                        <figcaption>Flux</figcaption>
+                        <div class="vis-compare-media"><img src="assets/figures/vis_compared_svg/Flux-5.svg" alt="Flux result for prompt 5." loading="lazy"></div>
+                    </figure>
+                    <figure class="vis-compare-card">
+                        <figcaption>Bagel</figcaption>
+                        <div class="vis-compare-media"><img src="assets/figures/vis_compared_svg/Bagel-5.svg" alt="Bagel result for prompt 5." loading="lazy"></div>
+                    </figure>
+                    <figure class="vis-compare-card">
+                        <figcaption>SANA</figcaption>
+                        <div class="vis-compare-media"><img src="assets/figures/vis_compared_svg/SANA-5.svg" alt="SANA result for prompt 5." loading="lazy"></div>
+                    </figure>
+                    <figure class="vis-compare-card mos">
+                        <figcaption>MoS-Image</figcaption>
+                        <div class="vis-compare-media"><img src="assets/figures/vis_compared_svg/MoS-Image-L-5.svg" alt="MoS-Image result for prompt 5." loading="lazy"></div>
+                    </figure>
+                </div>
+            </section>
+        </div>
+        <p class="caption">Prompt-conditioned one-row generation comparison across five prompts, with MoS-Image highlighted on the right.</p>
+    </div>
+
+    <div class="container blog main">
+        <h2>2. Instruction-based Editing</h2>
+    </div>
+
+    <div class="container blog extra-large gray-linear">
+        <p class="caption inline center"><b>Figure 3. Instruction-based Editing: Teaser and Prompt-conditioned Comparison.</b></p>
+        <img src="assets/figures/mos_teaser2.svg" alt="Teaser 2 for instruction-based image editing." style="background: #fff; width: 70%;">
+        <p class="caption">Teaser 2 for instruction-based image editing.</p>
+        <div class="vis-compare-showcase">
+            <div class="vis-compare-overview">
+                <div class="vis-compare-overview-copy">
+                    <p class="vis-compare-kicker">Prompt-conditioned editing</p>
+                    <p class="vis-compare-lede">Use the buttons to switch between editing cases. MoS-Image is highlighted on the right.</p>
+                </div>
+                <div class="vis-compare-methods">
+                    <span class="vis-compare-chip">Original Image</span>
+                    <span class="vis-compare-chip">Qwen-Image</span>
+                    <span class="vis-compare-chip">Flux-Kontext</span>
+                    <span class="vis-compare-chip">Bagel</span>
+                    <span class="vis-compare-chip mos">MoS-Image</span>
+                </div>
+            </div>
+
+            <div class="vis-compare-tabbar" role="tablist" aria-label="Editing case selection">
+                <button class="vis-compare-tab active" type="button" data-target="vis-edit-panel-1">01 Diffusion</button>
+                <button class="vis-compare-tab" type="button" data-target="vis-edit-panel-2">02 Character</button>
+                <button class="vis-compare-tab" type="button" data-target="vis-edit-panel-3">03 Jewelry</button>
+                <button class="vis-compare-tab" type="button" data-target="vis-edit-panel-4">04 Seasons</button>
+            </div>
+
+            <section class="vis-compare-panel active" id="vis-edit-panel-1">
+                <div class="vis-compare-prompt-card">
+                    <span class="vis-compare-index">Prompt 1</span>
+                    <p>remove 'Lover' text from the image, change the diffusion's color to light blue, add a word 'MoS' with purple under hand, and change the color of hand to gray</p>
+                </div>
+                <div class="vis-compare-grid">
+                    <figure class="vis-compare-card">
+                        <figcaption>Original Image</figcaption>
+                        <div class="vis-compare-media"><img src="assets/figures/vis_edit_compared_svg/Original-1.svg" alt="Original image for editing prompt 1." loading="lazy"></div>
+                    </figure>
+                    <figure class="vis-compare-card">
+                        <figcaption>Qwen-Image</figcaption>
+                        <div class="vis-compare-media"><img src="assets/figures/vis_edit_compared_svg/Qwen-Image-1.svg" alt="Qwen-Image result for editing prompt 1." loading="lazy"></div>
+                    </figure>
+                    <figure class="vis-compare-card">
+                        <figcaption>Flux-Kontext</figcaption>
+                        <div class="vis-compare-media"><img src="assets/figures/vis_edit_compared_svg/Flux-Kontext-1.svg" alt="Flux-Kontext result for editing prompt 1." loading="lazy"></div>
+                    </figure>
+                    <figure class="vis-compare-card">
+                        <figcaption>Bagel</figcaption>
+                        <div class="vis-compare-media"><img src="assets/figures/vis_edit_compared_svg/Bagel-1.svg" alt="Bagel result for editing prompt 1." loading="lazy"></div>
+                    </figure>
+                    <figure class="vis-compare-card mos">
+                        <figcaption>MoS-Image</figcaption>
+                        <div class="vis-compare-media"><img src="assets/figures/vis_edit_compared_svg/MoS-Image-L-1.svg" alt="MoS-Image result for editing prompt 1." loading="lazy"></div>
+                    </figure>
+                </div>
+            </section>
+
+            <section class="vis-compare-panel" id="vis-edit-panel-2">
+                <div class="vis-compare-prompt-card">
+                    <span class="vis-compare-index">Prompt 2</span>
+                    <p>Make it a smiling face, add glasses, change to blue fur and green clothes.</p>
+                </div>
+                <div class="vis-compare-grid">
+                    <figure class="vis-compare-card">
+                        <figcaption>Original Image</figcaption>
+                        <div class="vis-compare-media"><img src="assets/figures/vis_edit_compared_svg/Original-2.svg" alt="Original image for editing prompt 2." loading="lazy"></div>
+                    </figure>
+                    <figure class="vis-compare-card">
+                        <figcaption>Qwen-Image</figcaption>
+                        <div class="vis-compare-media"><img src="assets/figures/vis_edit_compared_svg/Qwen-Image-2.svg" alt="Qwen-Image result for editing prompt 2." loading="lazy"></div>
+                    </figure>
+                    <figure class="vis-compare-card">
+                        <figcaption>Flux-Kontext</figcaption>
+                        <div class="vis-compare-media"><img src="assets/figures/vis_edit_compared_svg/Flux-Kontext-2.svg" alt="Flux-Kontext result for editing prompt 2." loading="lazy"></div>
+                    </figure>
+                    <figure class="vis-compare-card">
+                        <figcaption>Bagel</figcaption>
+                        <div class="vis-compare-media"><img src="assets/figures/vis_edit_compared_svg/Bagel-2.svg" alt="Bagel result for editing prompt 2." loading="lazy"></div>
+                    </figure>
+                    <figure class="vis-compare-card mos">
+                        <figcaption>MoS-Image</figcaption>
+                        <div class="vis-compare-media"><img src="assets/figures/vis_edit_compared_svg/MoS-Image-L-2.svg" alt="MoS-Image result for editing prompt 2." loading="lazy"></div>
+                    </figure>
+                </div>
+            </section>
+
+            <section class="vis-compare-panel" id="vis-edit-panel-3">
+                <div class="vis-compare-prompt-card">
+                    <span class="vis-compare-index">Prompt 3</span>
+                    <p>The image depicts a person's hand holding a ring between their thumb and index finger. The hand has fair skin and is well-manicured. The ring is gold with pearls and diamonds, and is positioned in the center of the image. The background is a blurred beige or brown color, which helps to emphasize the ring and the hand. The overall tone of the image is elegant and sophisticated, with a focus on showcasing the ring in a luxurious and refined manner. The camera is positioned at a slightly elevated angle, capturing a close-up shot with a shallow depth of field, making the background blur and the ring sharp. The lighting is soft and gentle, with a subtle sheen on the hand and the ring. The image is of exceptionally high quality, with a clear and sharp focus on the ring and the hand.</p>
+                </div>
+                <div class="vis-compare-grid">
+                    <figure class="vis-compare-card">
+                        <figcaption>Original Image</figcaption>
+                        <div class="vis-compare-media"><img src="assets/figures/vis_edit_compared_svg/Original-3.svg" alt="Original image for editing prompt 3." loading="lazy"></div>
+                    </figure>
+                    <figure class="vis-compare-card">
+                        <figcaption>Qwen-Image</figcaption>
+                        <div class="vis-compare-media"><img src="assets/figures/vis_edit_compared_svg/Qwen-Image-3.svg" alt="Qwen-Image result for editing prompt 3." loading="lazy"></div>
+                    </figure>
+                    <figure class="vis-compare-card">
+                        <figcaption>Flux-Kontext</figcaption>
+                        <div class="vis-compare-media"><img src="assets/figures/vis_edit_compared_svg/Flux-Kontext-3.svg" alt="Flux-Kontext result for editing prompt 3." loading="lazy"></div>
+                    </figure>
+                    <figure class="vis-compare-card">
+                        <figcaption>Bagel</figcaption>
+                        <div class="vis-compare-media"><img src="assets/figures/vis_edit_compared_svg/Bagel-Image-S-3.svg" alt="Bagel result for editing prompt 3." loading="lazy"></div>
+                    </figure>
+                    <figure class="vis-compare-card mos">
+                        <figcaption>MoS-Image</figcaption>
+                        <div class="vis-compare-media"><img src="assets/figures/vis_edit_compared_svg/MoS-Image-L-3.svg" alt="MoS-Image result for editing prompt 3." loading="lazy"></div>
+                    </figure>
+                </div>
+            </section>
+
+            <section class="vis-compare-panel" id="vis-edit-panel-4">
+                <div class="vis-compare-prompt-card">
+                    <span class="vis-compare-index">Prompt 4</span>
+                    <p>Split the image into two sections, in the right section change the season to spring, in the left section change the season to winter, keep the original position of the tree</p>
+                </div>
+                <div class="vis-compare-grid">
+                    <figure class="vis-compare-card">
+                        <figcaption>Original Image</figcaption>
+                        <div class="vis-compare-media"><img src="assets/figures/vis_edit_compared_svg/Original-5.svg" alt="Original image for editing prompt 4." loading="lazy"></div>
+                    </figure>
+                    <figure class="vis-compare-card">
+                        <figcaption>Qwen-Image</figcaption>
+                        <div class="vis-compare-media"><img src="assets/figures/vis_edit_compared_svg/Qwen-Image-5.svg" alt="Qwen-Image result for editing prompt 4." loading="lazy"></div>
+                    </figure>
+                    <figure class="vis-compare-card">
+                        <figcaption>Flux-Kontext</figcaption>
+                        <div class="vis-compare-media"><img src="assets/figures/vis_edit_compared_svg/Flux-Kontext-5.svg" alt="Flux-Kontext result for editing prompt 4." loading="lazy"></div>
+                    </figure>
+                    <figure class="vis-compare-card">
+                        <figcaption>Bagel</figcaption>
+                        <div class="vis-compare-media"><img src="assets/figures/vis_edit_compared_svg/Bagel-5.svg" alt="Bagel result for editing prompt 4." loading="lazy"></div>
+                    </figure>
+                    <figure class="vis-compare-card mos">
+                        <figcaption>MoS-Image</figcaption>
+                        <div class="vis-compare-media"><img src="assets/figures/vis_edit_compared_svg/MoS-Image-L-5.svg" alt="MoS-Image result for editing prompt 4." loading="lazy"></div>
+                    </figure>
+                </div>
+            </section>
+        </div>
+        <p class="caption">Prompt-conditioned one-row editing comparison across four cases, with MoS-Image highlighted on the right.</p>
+    </div>
+
+    <div class="container blog main">
+        <h2>3. Router Behavior Visualization</h2>
+        <p class="text">
+            To make the router interpretable, we visualize its behavior on the caption “A dog holding a sign that says ‘MoS in 2025’”. The first row shows the denoising trajectory, illustrating how the output evolves from pure noise to a coherent image as sampling proceeds.
+        </p>
+        <p class="text">
+            We then summarize the router from two complementary views. First, we average routing weights across generation blocks and tokens to measure layer-wise importance at different denoising steps. Second, we fix a denoising step and inspect token-conditioned routing maps, which reveal how individual words trigger different connections between the understanding and generation towers.
+        </p>
+        <ul>
+            <li><p class="text">Routing is phase-dependent: early steps are sparse and selective, while later steps shift toward smoother, more stable importance patterns.</p></li>
+            <li><p class="text">Routing is token-specific: words such as “dog”, “holding”, and “sign” activate distinct layer combinations rather than sharing a single global pattern.</p></li>
+            <li><p class="text">These qualitative patterns support the main design claim of MoS: useful multimodal fusion is neither uniform nor static, but depends on both denoising stage and token semantics.</p></li>
+        </ul>
+    </div>
+
+    <div class="container blog extra-large gray-linear">
+        <img src="assets/figures/router_vis.svg" alt="Router Visualization" style="background: #fff;">
+        <p class="caption inline"><b>Figure 4. Router Visualization.</b></p>
+        <p class="caption">Top: generation outputs at different denoising steps. Middle: layer-wise importance aggregated across generation blocks and tokens. Bottom: token-conditioned routing patterns showing that different words induce different preferences over understanding-tower layers.</p>
+    </div>
+
+    <div class="container blog main">
+        <h2>4. Router Efficiency Analysis</h2>
+        <p class="text">
+            To quantify the practical cost of MoS routing, we decompose end-to-end inference into three stages: input encoding, iterative generation, and output decoding. As shown below, the understanding tower takes about <b>0.094s</b>, the generation tower takes about <b>0.121s</b>, and decoding takes about <b>0.016s</b>, while the MoS router contributes only around <b>0.007s</b>. This shows that token-wise routing introduces a small latency overhead relative to the dominant generation path.
+        </p>
+        <p class="text">
+            These results support our design goal: enabling dynamic, token-specific conditioning without sacrificing deployment efficiency under realistic sampling settings.
+        </p>
+    </div>
+
+    <div class="container blog main gray">
+        <img src="assets/figures/efficiency.png" alt="Router Efficiency">
+        <p class="caption">
+            <b>Figure 5. Router Efficiency.</b> Runtime breakdown across input encoding, iterative generation, and output decoding. The router overhead is small compared with the main generation computation.
+        </p>
+    </div>
+
+    <div class="container blog main">
+        <h2>5. Conclusion</h2>
+        <p class="text">
+            MoS replaces fixed multimodal fusion with a lightweight, token-wise router that dynamically selects hidden states across towers and denoising steps. This simple change makes the model substantially more adaptive without introducing heavy computational overhead.
+        </p>
+        <p class="text">
+            Across image generation, instruction-based editing, router visualization, and efficiency analysis, the same picture emerges: effective multimodal interaction should be dynamic, phase-aware, and token-specific. MoS turns that principle into a practical design that improves quality and controllability while remaining efficient to deploy.
+        </p>
+    </div>
+
+    <div class="container blog main">
+        <h1>Citation</h1>
+<pre><code class="plaintext">@article{liu2025mixture,
+  title={Mixture of States: Routing Token-Level Dynamics for Multimodal Generation},
+  author={Liu, Haozhe and Liu, Ding and Zhuge, Mingchen and Zhou, Zijian and Xie, Tian and He, Sen and Yang, Yukang and Liu, Shuming and Cong, Yuren and Guo, Jiadong and others},
+  journal={CVPR},
+  year={2026}
+}</code></pre>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>
+                This website is built on the <a href="https://shikun.io/projects/clarity">Clarity Template</a>, designed by <a href="https://shikun.io/">Shikun Liu</a>.
+            </p>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="clarity/clarity.js"></script>
+    <script src="assets/scripts/main.js"></script>
+</body>
+</html>
